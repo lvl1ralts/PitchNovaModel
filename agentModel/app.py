@@ -32,7 +32,7 @@ from config import Config
 
 # Initialize Flask app once and enable CORS for your frontend origin
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://pitch-nova.vercel.app"]}}, supports_credentials=True)
 app.config.from_object(Config)
 app.logger.setLevel(logging.DEBUG)
 
