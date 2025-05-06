@@ -111,24 +111,24 @@ def summariser(message_history, call_sid):
         raw = raw.strip()
         summary_json = json.loads(raw)
 
-        # POST to /summary endpoint on local server
-        try:
-            post_resp = requests.post(
-                "http://localhost:5000/summary",
-                json={
-                    "unique_id": call_sid,
-                    "messages": summary_json
-                },
-                timeout=10  # Add timeout to prevent hanging
-            )
+        # # POST to /summary endpoint on local server
+        # try:
+        #     post_resp = requests.post(
+        #         "http://localhost:5000/summary",
+        #         json={
+        #             "unique_id": call_sid,
+        #             "messages": summary_json
+        #         },
+        #         timeout=10  # Add timeout to prevent hanging
+        #     )
             
-            if post_resp.status_code == 200:
-                print("Summary successfully posted to /summary.")
-            else:
-                print(f"Failed to post summary: {post_resp.status_code} - {post_resp.text}")
-        except requests.exceptions.RequestException as e:
-            print(f"Request error: {str(e)}")
-            print("Make sure the Flask server is running on http://localhost:8080")
+        #     if post_resp.status_code == 200:
+        #         print("Summary successfully posted to /summary.")
+        #     else:
+        #         print(f"Failed to post summary: {post_resp.status_code} - {post_resp.text}")
+        # except requests.exceptions.RequestException as e:
+        #     print(f"Request error: {str(e)}")
+        #     print("Make sure the Flask server is running on http://localhost:8080")
         
         return summary_json
         

@@ -292,20 +292,20 @@ def start_call():
     ]
     save_conversation(unique_id, history)
     
-    # Post to conversation endpoint
-    try:
-        print(f"DEBUG: Posting initial conversation to /conversation endpoint", flush=True)
-        requests.post(
-            f"http://localhost:5000/conversation/{unique_id}",
-            json={
-                "unique_id": unique_id,
-                "messages": history[-2:]
-            },
-            timeout=2
-        )
-    except Exception as e:
-        print(f"DEBUG ERROR: Failed to send to /conversation: {str(e)}", flush=True)
-        # logger.warning(f"Failed to send to /conversation: {e}")
+    # # Post to conversation endpoint
+    # try:
+    #     print(f"DEBUG: Posting initial conversation to /conversation endpoint", flush=True)
+    #     requests.post(
+    #         f"http://localhost:5000/conversation/{unique_id}",
+    #         json={
+    #             "unique_id": unique_id,
+    #             "messages": history[-2:]
+    #         },
+    #         timeout=2
+    #     )
+    # except Exception as e:
+    #     print(f"DEBUG ERROR: Failed to send to /conversation: {str(e)}", flush=True)
+    #     # logger.warning(f"Failed to send to /conversation: {e}")
 
 
 
@@ -390,20 +390,20 @@ def gather_input_inbound():
     history = [{"role": "assistant", "content": agent_response}]
     save_conversation(unique_id, history)
     
-    # Post to conversation endpoint
-    try:
-        print(f"DEBUG: Posting initial inbound conversation to /conversation endpoint", flush=True)
-        requests.post(
-            f"http://localhost:5000/conversation/{unique_id}",
-            json={
-                "unique_id": unique_id,
-                "messages": history
-            },
-            timeout=2
-        )
-    except Exception as e:
-        print(f"DEBUG ERROR: Failed to send to /conversation: {str(e)}", flush=True)
-        # logger.warning(f"Failed to send to /conversation: {e}")
+    # # Post to conversation endpoint
+    # try:
+    #     print(f"DEBUG: Posting initial inbound conversation to /conversation endpoint", flush=True)
+    #     requests.post(
+    #         f"http://localhost:5000/conversation/{unique_id}",
+    #         json={
+    #             "unique_id": unique_id,
+    #             "messages": history
+    #         },
+    #         timeout=2
+    #     )
+    # except Exception as e:
+    #     print(f"DEBUG ERROR: Failed to send to /conversation: {str(e)}", flush=True)
+    #     # logger.warning(f"Failed to send to /conversation: {e}")
 
 
 
@@ -470,20 +470,20 @@ def process_speech():
     history.append({"role": "assistant", "content": response_text})
     save_conversation(call_sid, history)
 
-    # Post to conversation endpoint
-    try:
-        print(f"DEBUG: Posting updated conversation to /conversation endpoint", flush=True)
-        requests.post(
-            f"http://localhost:5000/conversation/{call_sid}",
-            json={
-                "unique_id": call_sid,
-                "messages": history[-2:]
-            },
-            timeout=2
-        )
-    except Exception as e:
-        print(f"DEBUG ERROR: Failed to send to /conversation: {str(e)}", flush=True)
-        # logger.warning(f"Failed to send to /conversation: {e}")
+    # # Post to conversation endpoint
+    # try:
+    #     print(f"DEBUG: Posting updated conversation to /conversation endpoint", flush=True)
+    #     requests.post(
+    #         f"http://localhost:5000/conversation/{call_sid}",
+    #         json={
+    #             "unique_id": call_sid,
+    #             "messages": history[-2:]
+    #         },
+    #         timeout=2
+    #     )
+    # except Exception as e:
+    #     print(f"DEBUG ERROR: Failed to send to /conversation: {str(e)}", flush=True)
+    #     # logger.warning(f"Failed to send to /conversation: {e}")
 
 
     try:
