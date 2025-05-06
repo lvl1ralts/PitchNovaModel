@@ -597,107 +597,107 @@ def event():
     return ('', 204)
 
 
-@app.route('/conversation/<unique_id>', methods=['POST'])
-def receive_conversation(unique_id):
-    """Receive and store conversation messages"""
-    print("DEBUG: Received conversation update", flush=True)
-    data = request.json
-    unique_id = data.get("unique_id")
-    messages = data.get("messages", [])
-    print(f"DEBUG: Conversation update for {unique_id} with {len(messages)} messages", flush=True)
+# @app.route('/conversation/<unique_id>', methods=['POST'])
+# def receive_conversation(unique_id):
+#     """Receive and store conversation messages"""
+#     print("DEBUG: Received conversation update", flush=True)
+#     data = request.json
+#     unique_id = data.get("unique_id")
+#     messages = data.get("messages", [])
+#     print(f"DEBUG: Conversation update for {unique_id} with {len(messages)} messages", flush=True)
 
-    if not unique_id or not isinstance(messages, list):
-        print("DEBUG ERROR: Invalid conversation format", flush=True)
-        return jsonify({"error": "Invalid format"}), 400
+#     if not unique_id or not isinstance(messages, list):
+#         print("DEBUG ERROR: Invalid conversation format", flush=True)
+#         return jsonify({"error": "Invalid format"}), 400
 
-    # Update conversation history
-    if unique_id not in CONVERSATIONS:
-        CONVERSATIONS[unique_id] = []
-    CONVERSATIONS[unique_id].extend(messages)
-    print(f"DEBUG: Updated in-memory conversation for {unique_id}, now has {len(CONVERSATIONS[unique_id])} messages", flush=True)
+#     # Update conversation history
+#     if unique_id not in CONVERSATIONS:
+#         CONVERSATIONS[unique_id] = []
+#     CONVERSATIONS[unique_id].extend(messages)
+#     print(f"DEBUG: Updated in-memory conversation for {unique_id}, now has {len(CONVERSATIONS[unique_id])} messages", flush=True)
 
-    return '', 204 
-
-
-@app.route('/conversation/<unique_id>', methods=['GET'])
-def get_conversation_endpoint(unique_id):
-    """Retrieve conversation history"""
-    print(f"DEBUG: Getting conversation for {unique_id}", flush=True)
-    conversation = CONVERSATIONS.get(unique_id, [])
-    print(f"DEBUG: Retrieved conversation with {len(conversation)} messages", flush=True)
-    return jsonify(conversation)
+#     return '', 204 
 
 
-@app.route('/summary/<unique_id>', methods=['POST'])
-def receive_summary(unique_id):
-    """Receive and store a summary"""
-    print("DEBUG: Received summary submission", flush=True)
-    data = request.json
-    unique_id = data.get("unique_id")
-    messages = data.get("messages")
-    print(f"DEBUG: Summary submission for {unique_id}", flush=True)
-    
-    if not unique_id:
-        print("DEBUG ERROR: Missing unique_id in summary submission", flush=True)
-        return jsonify({"error": "Missing unique_id"}), 400
-    
-    # Store the summary JSON object directly
-    SUMMARIES[unique_id] = messages
-    
-    # Also save to file
-    save_summary(unique_id, messages)
-    
-    print(f"DEBUG: Summary for call {unique_id} stored successfully", flush=True)
-    # logger.info(f"Summary for call {unique_id} received and stored")
-    
-    return jsonify({"status": "success"}), 200
+# @app.route('/conversation/<unique_id>', methods=['GET'])
+# def get_conversation_endpoint(unique_id):
+#     """Retrieve conversation history"""
+#     print(f"DEBUG: Getting conversation for {unique_id}", flush=True)
+#     conversation = CONVERSATIONS.get(unique_id, [])
+#     print(f"DEBUG: Retrieved conversation with {len(conversation)} messages", flush=True)
+#     return jsonify(conversation)
 
 
-@app.route('/summary/<unique_id>', methods=['GET'])
-def get_summary(unique_id):
-    """Retrieve a summary by call ID"""
-    print(f"DEBUG: Getting summary for {unique_id}", flush=True)
+# @app.route('/summary/<unique_id>', methods=['POST'])
+# def receive_summary(unique_id):
+#     """Receive and store a summary"""
+#     print("DEBUG: Received summary submission", flush=True)
+#     data = request.json
+#     unique_id = data.get("unique_id")
+#     messages = data.get("messages")
+#     print(f"DEBUG: Summary submission for {unique_id}", flush=True)
     
-    # First check in-memory store
-    if unique_id in SUMMARIES:
-        print(f"DEBUG: Retrieved summary from memory for call {unique_id}", flush=True)
-        # logger.info(f"Retrieved summary from memory for call {unique_id}")
-        return jsonify(SUMMARIES.get(unique_id))
+#     if not unique_id:
+#         print("DEBUG ERROR: Missing unique_id in summary submission", flush=True)
+#         return jsonify({"error": "Missing unique_id"}), 400
     
-    # Then check file store
-    summary = load_summary(unique_id)
-    if summary:
-        # Add to in-memory store for faster access next time
-        SUMMARIES[unique_id] = summary
-        print(f"DEBUG: Retrieved summary from file for call {unique_id}", flush=True)
-        # logger.info(f"Retrieved summary from file for call {unique_id}")
-        return jsonify(summary)
+#     # Store the summary JSON object directly
+#     SUMMARIES[unique_id] = messages
     
-    print(f"DEBUG WARNING: Summary not found for call {unique_id}", flush=True)
-    # logger.warning(f"Summary not found for call {unique_id}")
-    return jsonify({"error": "Summary not found"}), 404
+#     # Also save to file
+#     save_summary(unique_id, messages)
+    
+#     print(f"DEBUG: Summary for call {unique_id} stored successfully", flush=True)
+#     # logger.info(f"Summary for call {unique_id} received and stored")
+    
+#     return jsonify({"status": "success"}), 200
 
 
-@app.route('/summary/<unique_id>', methods=['POST'])
-def post_summary(unique_id):
-    """Store a summary for a specific call ID"""
-    print(f"DEBUG: Posting summary for {unique_id}", flush=True)
-    data = request.json
+# @app.route('/summary/<unique_id>', methods=['GET'])
+# def get_summary(unique_id):
+#     """Retrieve a summary by call ID"""
+#     print(f"DEBUG: Getting summary for {unique_id}", flush=True)
     
-    if not data:
-        print("DEBUG ERROR: Missing summary data in POST request", flush=True)
-        return jsonify({"error": "Missing summary data"}), 400
+#     # First check in-memory store
+#     if unique_id in SUMMARIES:
+#         print(f"DEBUG: Retrieved summary from memory for call {unique_id}", flush=True)
+#         # logger.info(f"Retrieved summary from memory for call {unique_id}")
+#         return jsonify(SUMMARIES.get(unique_id))
     
-    # Store the summary JSON object directly
-    SUMMARIES[unique_id] = data
+#     # Then check file store
+#     summary = load_summary(unique_id)
+#     if summary:
+#         # Add to in-memory store for faster access next time
+#         SUMMARIES[unique_id] = summary
+#         print(f"DEBUG: Retrieved summary from file for call {unique_id}", flush=True)
+#         # logger.info(f"Retrieved summary from file for call {unique_id}")
+#         return jsonify(summary)
     
-    # Also save to file
-    save_summary(unique_id, data)
+#     print(f"DEBUG WARNING: Summary not found for call {unique_id}", flush=True)
+#     # logger.warning(f"Summary not found for call {unique_id}")
+#     return jsonify({"error": "Summary not found"}), 404
+
+
+# @app.route('/summary/<unique_id>', methods=['POST'])
+# def post_summary(unique_id):
+#     """Store a summary for a specific call ID"""
+#     print(f"DEBUG: Posting summary for {unique_id}", flush=True)
+#     data = request.json
     
-    print(f"DEBUG: Summary for call {unique_id} posted and stored successfully", flush=True)
-    # logger.info(f"Summary for call {unique_id} posted and stored")
+#     if not data:
+#         print("DEBUG ERROR: Missing summary data in POST request", flush=True)
+#         return jsonify({"error": "Missing summary data"}), 400
     
-    return jsonify({"status": "success", "message": f"Summary for call {unique_id} stored successfully"}), 200
+#     # Store the summary JSON object directly
+#     SUMMARIES[unique_id] = data
+    
+#     # Also save to file
+#     save_summary(unique_id, data)
+    
+#     print(f"DEBUG: Summary for call {unique_id} posted and stored successfully", flush=True)
+#     # logger.info(f"Summary for call {unique_id} posted and stored")
+    
+#     return jsonify({"status": "success", "message": f"Summary for call {unique_id} stored successfully"}), 200
 
 
 # @app.route('/trigger-summary/<call_sid>', methods=['POST'])
