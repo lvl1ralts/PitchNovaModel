@@ -1,6 +1,6 @@
 import requests
 import json
-from google import genai
+# from google import genai
 from groq import Groq
 
 tools_info = {
@@ -128,7 +128,7 @@ def summariser(message_history, call_sid):
                 print(f"Failed to post summary: {post_resp.status_code} - {post_resp.text}")
         except requests.exceptions.RequestException as e:
             print(f"Request error: {str(e)}")
-            print("Make sure the Flask server is running on http://localhost:5000")
+            print("Make sure the Flask server is running on http://localhost:8080")
         
         return summary_json
         
@@ -166,7 +166,7 @@ def get_summary(unique_id):
     return jsonify(SUMMARIES.get(unique_id))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
 
 
 

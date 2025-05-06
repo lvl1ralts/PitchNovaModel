@@ -722,5 +722,5 @@ def post_summary(unique_id):
 
 
 if __name__ == '__main__':
-    print("DEBUG: Starting Flask server on port 5000", flush=True)
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    print("DEBUG: Starting Flask server on port 8080", flush=True)
+    app.run(debug=True, host='0.0.0.0', port=8080)
