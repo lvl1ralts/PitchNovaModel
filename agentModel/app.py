@@ -127,7 +127,7 @@ def summariser(message_history, call_sid):
     print(f"DEBUG: Starting summarization for call {call_sid}", flush=True)
     
     try:
-        gclient = Groq(api_key="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")
+        gclient = Groq(api_key="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")
         
         # Format the conversation history as a string
         conversation_text = ""
